@@ -1,17 +1,22 @@
+// src/pages/ScoreList.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
+import ScoreMatchService from "@/lib/service/ScoreMatch"; // path ini sesuaikan ya
 
 const ScoreList = () => {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9999/api/score-match")
-      .then((res) => {
-        const result = Array.isArray(res.data) ? res.data : res.data.data || [];
-        setScores(result);
-      })
-      .catch((err) => console.error("Failed to fetch score matches", err));
+    const fetchScores = async () => {
+      try {
+        const data = await ScoreMatchService.getAll();
+        setScores(data);
+      } catch (error) {
+        console.error("Error loading score matches:", error);
+        setScores([]); // biar tetap aman di UI meskipun error
+      }
+    };
+
+    fetchScores();
   }, []);
 
   return (

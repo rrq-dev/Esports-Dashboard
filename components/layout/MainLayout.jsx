@@ -16,7 +16,7 @@ const MainLayout = () => {
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
       <header className="bg-gray-900 text-white p-4 flex justify-between items-center shadow-md">
-        <h1 className="text-xl font-bold">Esports Dashboard</h1>
+        <h1 className="text-xl font-bold">Esports App</h1>
         <nav className="space-x-2">
           {navLinks.map((link) => (
             <Link key={link.path} to={link.path}>
@@ -39,7 +39,7 @@ const MainLayout = () => {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white text-center py-3 text-sm">
-        &copy; {new Date().getFullYear()} Esports App — Made with 💻 by Adit
+        &copy; {new Date().getFullYear()} Esports App | All rights reserved.
       </footer>
     </div>
   );

@@ -1,14 +1,15 @@
+// src/pages/TeamList.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
+import TeamService from "@/lib/service/Team"; // sesuaikan path kalau perlu
 
 function TeamList() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9999/api/team")
-      .then((res) => {
-        const data = res.data.data || [];
+    const fetchTeams = async () => {
+      try {
+        const data = await TeamService.getAll();
+
         const enrichedData = data.map((team, index) => {
           const win = Math.floor(Math.random() * 10);
           const lose = Math.floor(Math.random() * 10);
@@ -24,12 +25,15 @@ function TeamList() {
             point,
           };
         });
+
         setTeams(enrichedData);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch teams:", err);
+      } catch (error) {
+        console.error("Failed to fetch teams:", error);
         setTeams([]);
-      });
+      }
+    };
+
+    fetchTeams();
   }, []);
 
   return (

@@ -1,19 +1,22 @@
+// src/pages/PlayerList.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
+import PlayerService from "@/lib/service/Player"; // ganti path ini sesuai struktur project-mu
 
 function PlayerList() {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9999/api/player")
-      .then((res) => {
-        setPlayers(res.data.data || []);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch players:", err);
-        setPlayers([]);
-      });
+    const fetchPlayers = async () => {
+      try {
+        const data = await PlayerService.getAll();
+        setPlayers(data);
+      } catch (error) {
+        console.error("Error fetching players:", error);
+        setPlayers([]); // fallback biar UI tetap jalan
+      }
+    };
+
+    fetchPlayers();
   }, []);
 
   return (

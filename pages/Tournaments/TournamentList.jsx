@@ -1,17 +1,21 @@
+// src/pages/TournamentList.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
+import TournamentService from "@/lib/service/Tournament"; // <- ini sesuai pathmu
 
 const TournamentList = () => {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9999/api/tournament")
-      .then((res) => {
-        const result = Array.isArray(res.data) ? res.data : res.data.data || [];
-        setTournaments(result);
-      })
-      .catch((err) => console.error("Failed to fetch tournaments", err));
+    const fetchData = async () => {
+      try {
+        const data = await TournamentService.getAll();
+        setTournaments(data);
+      } catch (error) {
+        console.error("Error loading tournaments:", error);
+        setTournaments([]); // fallback aja biar gak nge-freeze UI
+      }
+    };
+    fetchData();
   }, []);
 
   return (
@@ -32,7 +36,9 @@ const TournamentList = () => {
               <p className="text-sm text-gray-500 mb-1">
                 {tourney.start_date} — {tourney.end_date}
               </p>
-              <p className="text-sm text-gray-700 mb-2">{tourney.location}</p>
+              <p className="text-sm text-gray-700 mb-2">
+                {tourney.location || "Unknown Location"}
+              </p>
               <p className="text-xs text-gray-400">
                 Total Teams: {tourney.teams?.length || 0}
               </p>

@@ -55,25 +55,25 @@ export default function UserDashboard() {
       title: "Total Tim",
       value: summary.teams,
       icon: <Users className="w-6 h-6 text-blue-600" />,
-      link: "/teams",
+      link: "/team",
     },
     {
       title: "Total Pemain",
       value: summary.players,
       icon: <Gamepad2 className="w-6 h-6 text-green-600" />,
-      link: "/players",
+      link: "/player",
     },
     {
       title: "Total Turnamen",
       value: summary.tournaments,
       icon: <Trophy className="w-6 h-6 text-yellow-500" />,
-      link: "/tournaments",
+      link: "/tournament",
     },
     {
       title: "Total Pertandingan",
       value: summary.matches,
       icon: <ListOrdered className="w-6 h-6 text-red-500" />,
-      link: "/scores",
+      link: "/score-match",
     },
   ];
 
