@@ -2,21 +2,25 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { GalleryVerticalEnd, Mail, Eye, EyeOff, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // ⬅️ updated
+import { Link, useNavigate } from "react-router-dom";
 
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+// Import dari service folder
+import { registerUser } from "../service/auth/auth";
+
 export function RegisterForm({ className, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // ⬅️ added
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (!username || !email || !password) {
@@ -28,7 +32,14 @@ export function RegisterForm({ className, ...props }) {
         color: "#fff",
         confirmButtonColor: "#ef4444",
       });
-    } else {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await registerUser(username, email, password);
+
       Swal.fire({
         icon: "success",
         title: "Registrasi sukses!",
@@ -39,8 +50,19 @@ export function RegisterForm({ className, ...props }) {
         timer: 1800,
         showConfirmButton: false,
       }).then(() => {
-        navigate("/"); // ⬅️ redirect ke halaman login setelah success
+        navigate("/"); // ke halaman login
       });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Register!",
+        text: error.message,
+        background: "#1e1b4b",
+        color: "#fff",
+        confirmButtonColor: "#ef4444",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -146,8 +168,9 @@ export function RegisterForm({ className, ...props }) {
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md transition-all duration-300"
+              disabled={isLoading}
             >
-              Register
+              {isLoading ? "Registering..." : "Register"}
             </Button>
           </div>
         </div>

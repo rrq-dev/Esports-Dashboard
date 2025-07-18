@@ -2,20 +2,21 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { GalleryVerticalEnd, Mail, Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // ⬅️ Ditambahkan
+import { Link, useNavigate } from "react-router-dom";
 
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginUser } from "../service/auth/auth";
 
 export function LoginForm({ className, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // ⬅️ Ditambahkan
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -30,7 +31,11 @@ export function LoginForm({ className, ...props }) {
           popup: "rounded-xl shadow-lg border border-red-400",
         },
       });
-    } else {
+      return;
+    }
+
+    try {
+      await loginUser(email, password);
       Swal.fire({
         icon: "success",
         title: "Login sukses!",
@@ -44,7 +49,19 @@ export function LoginForm({ className, ...props }) {
           popup: "rounded-xl shadow-lg border border-purple-500",
         },
       }).then(() => {
-        navigate("/dashboard"); // ⬅️ Redirect ke dashboard setelah login sukses
+        navigate("/dashboard");
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Login gagal",
+        text: error.message,
+        background: "#1e1b4b",
+        color: "#fff",
+        confirmButtonColor: "#ef4444",
+        customClass: {
+          popup: "rounded-xl shadow-lg border border-red-400",
+        },
       });
     }
   };
@@ -59,7 +76,6 @@ export function LoginForm({ className, ...props }) {
     >
       <form onSubmit={handleLogin}>
         <div className="flex flex-col gap-6">
-          {/* Header */}
           <div className="flex flex-col items-center gap-2">
             <a
               href="#"
@@ -84,9 +100,7 @@ export function LoginForm({ className, ...props }) {
             </div>
           </div>
 
-          {/* Form Fields */}
           <div className="flex flex-col gap-4">
-            {/* Email */}
             <div className="grid gap-1">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -105,12 +119,10 @@ export function LoginForm({ className, ...props }) {
               </div>
             </div>
 
-            {/* Password */}
             <div className="grid gap-1">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-3 flex items-center text-purple-500 opacity-0">
-                  {/* Hidden for spacing */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4"
@@ -150,7 +162,6 @@ export function LoginForm({ className, ...props }) {
               </div>
             </div>
 
-            {/* Login Button */}
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md transition-all duration-300"
