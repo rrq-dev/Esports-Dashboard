@@ -1,5 +1,4 @@
-
-const API_URL = "http://localhost:1010/api/auth"; // Ganti dengan URL backend kamu
+const API_URL = "http://localhost:1010/api/auth";
 
 export async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/login`, {
@@ -16,10 +15,14 @@ export async function loginUser(email, password) {
     throw new Error(data.message || "Login failed");
   }
 
-  // Simpan token ke localStorage
+  // Simpan ke localStorage
   localStorage.setItem("token", data.token);
+  localStorage.setItem("role", data.role);
 
-  return data;
+  return {
+    token: data.token,
+    role: data.role,
+  };
 }
 
 export async function registerUser(username, email, password) {
