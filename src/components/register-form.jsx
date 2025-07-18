@@ -1,50 +1,45 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-import { GalleryVerticalEnd, Mail, Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // ⬅️ Ditambahkan
+import { GalleryVerticalEnd, Mail, Eye, EyeOff, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom"; // ⬅️ updated
 
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm({ className, ...props }) {
+export function RegisterForm({ className, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // ⬅️ Ditambahkan
+  const navigate = useNavigate(); // ⬅️ added
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!username || !email || !password) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Email dan password tidak boleh kosong!",
+        text: "Semua field harus diisi!",
         background: "#1e1b4b",
         color: "#fff",
         confirmButtonColor: "#ef4444",
-        customClass: {
-          popup: "rounded-xl shadow-lg border border-red-400",
-        },
       });
     } else {
       Swal.fire({
         icon: "success",
-        title: "Login sukses!",
-        text: `Selamat datang kembali, ${email.split("@")[0].toUpperCase()}!`,
+        title: "Registrasi sukses!",
+        text: `Selamat datang, ${username}!`,
         background: "#1e1b4b",
         color: "#fff",
         confirmButtonColor: "#6366f1",
         timer: 1800,
         showConfirmButton: false,
-        customClass: {
-          popup: "rounded-xl shadow-lg border border-purple-500",
-        },
       }).then(() => {
-        navigate("/dashboard"); // ⬅️ Redirect ke dashboard setelah login sukses
+        navigate("/"); // ⬅️ redirect ke halaman login setelah success
       });
     }
   };
@@ -57,35 +52,52 @@ export function LoginForm({ className, ...props }) {
       className={cn("flex flex-col gap-6", className)}
       {...props}
     >
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleRegister}>
         <div className="flex flex-col gap-6">
           {/* Header */}
           <div className="flex flex-col items-center gap-2">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="flex flex-col items-center gap-2 font-medium"
             >
               <div className="flex size-8 items-center justify-center rounded-md bg-gradient-to-r from-purple-500 to-blue-500 text-white">
                 <GalleryVerticalEnd className="size-6" />
               </div>
-              <span className="sr-only">Esports App</span>
-            </a>
+              <span className="sr-only">Acme Arena</span>
+            </Link>
             <h1 className="text-xl font-extrabold bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
-              Welcome to Esports App
+              Create your account
             </h1>
             <div className="text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/register"
+                to="/"
                 className="underline underline-offset-4 text-blue-400 hover:text-blue-600"
               >
-                Sign up
+                Login
               </Link>
             </div>
           </div>
 
           {/* Form Fields */}
           <div className="flex flex-col gap-4">
+            {/* Username */}
+            <div className="grid gap-1">
+              <Label htmlFor="username">Username</Label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-3 flex items-center text-purple-500">
+                  <User className="size-4" />
+                </span>
+                <Input
+                  id="username"
+                  placeholder="gamer_legend"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="pl-10 border border-purple-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/50 transition-all"
+                />
+              </div>
+            </div>
+
             {/* Email */}
             <div className="grid gap-1">
               <Label htmlFor="email">Email</Label>
@@ -99,7 +111,6 @@ export function LoginForm({ className, ...props }) {
                   placeholder="m@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                   className="pl-10 border border-purple-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/50 transition-all"
                 />
               </div>
@@ -109,30 +120,12 @@ export function LoginForm({ className, ...props }) {
             <div className="grid gap-1">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-3 flex items-center text-purple-500 opacity-0">
-                  {/* Hidden for spacing */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M0 0h24v24H0z"
-                    />
-                  </svg>
-                </span>
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                   className="pl-10 pr-10 border border-purple-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/50 transition-all"
                 />
                 <button
@@ -150,12 +143,11 @@ export function LoginForm({ className, ...props }) {
               </div>
             </div>
 
-            {/* Login Button */}
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md transition-all duration-300"
             >
-              Login
+              Register
             </Button>
           </div>
         </div>
