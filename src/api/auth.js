@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:1010/api/auth";
+const API_URL = "https://embeck.onrender.com/api/auth";
 
 export async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/login`, {
@@ -16,13 +16,16 @@ export async function loginUser(email, password) {
   }
 
   // Simpan data user lengkap ke localStorage
-  localStorage.setItem("currentUser", JSON.stringify({
-    token: data.token,
-    role: data.role,
-    userId: data.user_id,
-    username: data.username,
-    email: data.email,
-  }));
+  localStorage.setItem(
+    "currentUser",
+    JSON.stringify({
+      token: data.token,
+      role: data.role,
+      userId: data.user_id,
+      username: data.username,
+      email: data.email,
+    })
+  );
 
   return data;
 }
@@ -48,13 +51,15 @@ export async function registerUser(username, email, password) {
 // Fungsi untuk mengambil data user dari API
 export const fetchUserData = async (userId) => {
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/users/${userId}`);
+    const response = await fetch(
+      `https://embeck.onrender.com/api/admin/users/${userId}`
+    );
     if (!response.ok) {
-      throw new Error('Failed to fetch user data');
+      throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error('Error fetching user data: ' + error.message);
+    throw new Error("Error fetching user data: " + error.message);
   }
 };

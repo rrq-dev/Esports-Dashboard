@@ -33,15 +33,16 @@ export function LoginForm({ className, ...props }) {
 
     try {
       const userData = await loginUser(email, password);
-      
-      if (userData && userData.role === 'admin') {
-        setSuccess(`Selamat datang kembali, ${userData.username}!`);
-        setTimeout(() => {
+      setSuccess(`Selamat datang kembali, ${userData.username}!`);
+
+      // Arahkan berdasarkan peran pengguna
+      setTimeout(() => {
+        if (userData.role === "admin") {
           navigate("/dashboard");
-        }, 1500);
-      } else {
-        setError("Akses ditolak. Hanya admin yang dapat mengakses dashboard.");
-      }
+        } else {
+          navigate("/home");
+        }
+      }, 1500);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -69,9 +70,7 @@ export function LoginForm({ className, ...props }) {
               </div>
               <span className="sr-only">Esports App</span>
             </Link>
-            <h1 className="text-xl font-extrabold">
-              Welcome to Esports App
-            </h1>
+            <h1 className="text-xl font-extrabold">Welcome to Esports App</h1>
             <div className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
               <Link
@@ -141,11 +140,7 @@ export function LoginForm({ className, ...props }) {
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>

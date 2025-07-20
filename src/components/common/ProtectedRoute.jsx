@@ -10,7 +10,7 @@ export function ProtectedRoute({ children }) {
     const checkAuth = async () => {
       try {
         // Ambil data dari localStorage (simulasi session)
-        const storedUser = localStorage.getItem('currentUser');
+        const storedUser = localStorage.getItem("currentUser");
         if (!storedUser) {
           setIsAuthenticated(false);
           setIsLoading(false);
@@ -18,16 +18,17 @@ export function ProtectedRoute({ children }) {
         }
 
         const user = JSON.parse(storedUser);
-        
-        // Validasi role admin langsung dari localStorage
-        if (user && user.role === 'admin') {
+
+        // Validasi role admin dan user dari localStorage
+        // Mengizinkan akses untuk kedua role
+        if (user && (user.role === "admin" || user.role === "user")) {
           setUserData(user);
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error("Auth check failed:", error);
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
@@ -54,4 +55,4 @@ export function ProtectedRoute({ children }) {
 
   // Pass userData to children components
   return children;
-} 
+}

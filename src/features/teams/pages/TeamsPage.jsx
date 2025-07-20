@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/common/app-sidebar"
+import { AppSidebar } from "@/components/common/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,39 +6,47 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { fetchAllTeams } from "@/api/team"
-import { Button } from "@/components/ui/button"
-import { Pencil, Trash2, PlusCircle } from "lucide-react"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { fetchAllTeams } from "@/api/team";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash2, PlusCircle } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function TeamsPage() {
-  const [teams, setTeams] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [teams, setTeams] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getTeams = async () => {
       try {
-        const data = await fetchAllTeams()
-        setTeams(data)
+        const data = await fetchAllTeams();
+        setTeams(data);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
-    getTeams()
-  }, [])
+    };
+    getTeams();
+  }, []);
 
   if (isLoading) {
     return (
@@ -53,7 +61,7 @@ export function TeamsPage() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    )
+    );
   }
 
   if (error) {
@@ -66,7 +74,7 @@ export function TeamsPage() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    )
+    );
   }
 
   return (
@@ -84,9 +92,7 @@ export function TeamsPage() {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink asChild>
-                    <Link to="/dashboard">
-                      Dashboard
-                    </Link>
+                    <Link to="/dashboard">Dashboard</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
@@ -122,13 +128,22 @@ export function TeamsPage() {
                   <TableRow key={team._id}>
                     <TableCell>
                       <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarImage src={team.logo_url || "https://github.com/shadcn.png"} alt={team.team_name} />
-                        <AvatarFallback className="rounded-lg">{team.team_name.charAt(0).toUpperCase()}</AvatarFallback>
+                        <AvatarImage
+                          src={team.logo_url || "https://github.com/shadcn.png"}
+                          alt={team.team_name}
+                        />
+                        <AvatarFallback className="rounded-lg">
+                          {team.team_name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
                     </TableCell>
-                    <TableCell className="font-medium">{team.team_name}</TableCell>
+                    <TableCell className="font-medium">
+                      {team.team_name}
+                    </TableCell>
                     <TableCell>{team.captain_id}</TableCell>
-                    <TableCell>{team.members ? team.members.length : 0}</TableCell>
+                    <TableCell>
+                      {team.members ? team.members.length : 0}
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" size="icon">
@@ -147,5 +162,5 @@ export function TeamsPage() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
-} 
+  );
+}
