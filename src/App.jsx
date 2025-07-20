@@ -1,14 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LoginPage, RegisterPage, DashboardPage } from "./pages";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AppRoutes } from "./router/AppRoutes";
+import { Toaster } from "sonner";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Routes>
+      <AppRoutes />
+      <Toaster position="bottom-right" />
     </Router>
   );
 }

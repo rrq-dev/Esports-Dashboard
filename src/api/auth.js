@@ -15,14 +15,16 @@ export async function loginUser(email, password) {
     throw new Error(data.message || "Login failed");
   }
 
-  // Simpan ke localStorage
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("role", data.role);
-
-  return {
+  // Simpan data user lengkap ke localStorage
+  localStorage.setItem("currentUser", JSON.stringify({
     token: data.token,
     role: data.role,
-  };
+    userId: data.user_id,
+    username: data.username,
+    email: data.email,
+  }));
+
+  return data;
 }
 
 export async function registerUser(username, email, password) {
@@ -42,3 +44,17 @@ export async function registerUser(username, email, password) {
 
   return data;
 }
+
+// Fungsi untuk mengambil data user dari API
+export const fetchUserData = async (userId) => {
+  try {
+    const response = await fetch(`http://localhost:1010/api/admin/users/${userId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error('Error fetching user data: ' + error.message);
+  }
+};
