@@ -4,7 +4,7 @@ export const fetchAllPlayers = async () => {
     : null;
 
   try {
-    const response = await fetch("https://embeck.onrender.com/api/players", {
+    const response = await fetch("http://localhost:1010/api/admin/players", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -25,7 +25,7 @@ export const createPlayer = async (playerData) => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/players", {
+    const response = await fetch("http://localhost:1010/api/admin/players", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const fetchPlayerById = async (playerId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/players/${playerId}`,
+      `http://localhost:1010/api/admin/players/${playerId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ export const updatePlayer = async (playerId, playerData) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/players/${playerId}`,
+      `http://localhost:1010/api/admin/players/${playerId}`,
       {
         method: "PUT",
         headers: {
@@ -103,7 +103,7 @@ export const deletePlayer = async (playerId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/players/${playerId}`,
+      `http://localhost:1010/api/admin/players/${playerId}`,
       {
         method: "DELETE",
         headers: {

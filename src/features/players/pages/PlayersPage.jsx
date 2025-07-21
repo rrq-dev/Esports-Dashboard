@@ -34,7 +34,7 @@ export function PlayersPage() {
     const getPlayers = async () => {
       try {
         const data = await fetchAllPlayers()
-        setPlayers(data)
+        setPlayers(data || []) // Pastikan data adalah array, atau array kosong jika null
       } catch (err) {
         setError(err.message)
       } finally {

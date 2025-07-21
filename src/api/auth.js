@@ -1,4 +1,4 @@
-const API_URL = "https://embeck.onrender.com/api/auth";
+const API_URL = "http://localhost:1010/api/auth";
 
 export async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/login`, {
@@ -52,7 +52,7 @@ export async function registerUser(username, email, password) {
 export const fetchUserData = async (userId) => {
   try {
     const response = await fetch(
-      `https://embeck.onrender.com/api/admin/users/${userId}`
+      `http://localhost:1010/api/admin/users/${userId}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch user data");

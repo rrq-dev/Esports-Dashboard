@@ -1,5 +1,5 @@
 // Base URL for ticket endpoints
-const API_URL = "https://embeck.onrender.com/api";
+const API_URL = "http://localhost:1010/api";
 
 /**
  * Fetch all tickets

@@ -1,51 +1,117 @@
-// Base URL for tournament endpoints
-const API_URL = "https://embeck.onrender.com/api";
-
-/**
- * Fetch all tournaments
- * @returns {Promise<Array>} Array of tournaments
- */
-export const fetchAllTournaments = async () => {
+export const fetchAllTournamentsPublic = async () => {
   try {
-    const response = await fetch(`${API_URL}/tournaments`);
+    const response = await fetch("http://localhost:1010/api/tournaments");
     if (!response.ok) {
-      throw new Error("Failed to fetch tournaments data");
+      throw new Error("Gagal memuat data turnamen.");
     }
     const data = await response.json();
-    return data;
+    return data || [];
   } catch (error) {
-    throw new Error("Error fetching tournaments data: " + error.message);
+    console.error("Error fetching public tournaments:", error);
+    throw error;
   }
 };
 
-/**
- * Fetch tournament details by ID
- * @param {string} tournamentId - The tournament ID
- * @returns {Promise<Object>} Tournament details with teams and matches
- */
+export const createTournament = async (tournamentData) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+    
+  try {
+    const response = await fetch("http://localhost:1010/api/admin/tournaments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tournamentData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal membuat turnamen.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating tournament:", error);
+    throw error;
+  }
+};
+
 export const fetchTournamentById = async (tournamentId) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+    
   try {
-    const response = await fetch(`${API_URL}/tournaments/${tournamentId}`);
+    // Using admin endpoint to get full details including participants
+    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     if (!response.ok) {
-      throw new Error("Failed to fetch tournament details");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal memuat detail turnamen.");
     }
-    const data = await response.json();
-    return data;
+
+    return await response.json();
   } catch (error) {
-    throw new Error("Error fetching tournament details: " + error.message);
+    console.error("Error fetching tournament details:", error);
+    throw error;
   }
 };
 
-/**
- * Fetch tournaments by status (upcoming, ongoing, completed)
- * @param {string} status - Tournament status
- * @returns {Promise<Array>} Array of tournaments with the specified status
- */
-export const fetchTournamentsByStatus = async (status) => {
+export const updateTournament = async (tournamentId, tournamentData) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+    
   try {
-    const allTournaments = await fetchAllTournaments();
-    return allTournaments.filter((tournament) => tournament.status === status);
+    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tournamentData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal mengupdate turnamen.");
+    }
+
+    return await response.json();
   } catch (error) {
-    throw new Error(`Error fetching ${status} tournaments: ${error.message}`);
+    console.error("Error updating tournament:", error);
+    throw error;
+  }
+};
+
+export const deleteTournament = async (tournamentId) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+    
+  try {
+    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal menghapus turnamen.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error deleting tournament:", error);
+    throw error;
   }
 };

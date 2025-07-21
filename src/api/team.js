@@ -4,7 +4,7 @@ export const fetchAllTeams = async () => {
     : null;
 
   try {
-    const response = await fetch("https://embeck.onrender.com/api/teams", {
+    const response = await fetch("http://localhost:1010/api/admin/teams", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -16,6 +16,130 @@ export const fetchAllTeams = async () => {
     return data; // Sesuaikan jika ada struktur data lain di respons backend
   } catch (error) {
     throw new Error("Error fetching teams data: " + error.message);
+  }
+};
+
+/**
+ * Create a new team
+ * @param {Object} teamData - The team data to create (TeamName, CaptainID, Members, LogoURL)
+ * @returns {Promise<Object>} Created team data or confirmation
+ */
+export const createTeam = async (teamData) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
+  try {
+    const response = await fetch("http://localhost:1010/api/admin/teams", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(teamData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to create team");
+    }
+    const data = await response.json();
+    return data; // Return the created team data or confirmation
+  } catch (error) {
+    throw new Error("Error creating team: " + error.message);
+  }
+};
+
+/**
+ * Fetch team by ID
+ * @param {string} teamId - The team ID
+ * @returns {Promise<Object>} Team data
+ */
+export const fetchTeamById = async (teamId) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
+  try {
+    const response = await fetch(
+      `http://localhost:1010/api/admin/teams/${teamId}`,
+      { 
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch team data");
+    }
+    const data = await response.json();
+    return data; // Return the team data object
+  } catch (error) {
+    throw new Error("Error fetching team data: " + error.message);
+  }
+};
+
+/**
+ * Update a team
+ * @param {string} teamId - The team ID
+ * @param {Object} teamData - The team data to update
+ * @returns {Promise<Object>} Updated team data or confirmation
+ */
+export const updateTeam = async (teamId, teamData) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
+  try {
+    const response = await fetch(
+      `http://localhost:1010/api/admin/teams/${teamId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(teamData),
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to update team");
+    }
+    const data = await response.json();
+    return data; // Return the updated team data or confirmation
+  } catch (error) {
+    throw new Error("Error updating team: " + error.message);
+  }
+};
+
+/**
+ * Delete a team
+ * @param {string} teamId - The team ID
+ * @returns {Promise<Object>} Confirmation message
+ */
+export const deleteTeam = async (teamId) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
+  try {
+    const response = await fetch(
+      `http://localhost:1010/api/admin/teams/${teamId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to delete team");
+    }
+    const data = await response.json();
+    return data; // Return confirmation message
+  } catch (error) {
+    throw new Error("Error deleting team: " + error.message);
   }
 };
 
@@ -32,7 +156,7 @@ export const fetchTeamWithPlayers = async (teamId) => {
   try {
     // First, fetch the team details
     const teamResponse = await fetch(
-      `https://embeck.onrender.com/api/teams/${teamId}`,
+      `http://localhost:1010/api/admin/teams/${teamId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,7 +181,7 @@ export const fetchTeamWithPlayers = async (teamId) => {
 
     // Fetch all players data to avoid multiple API calls
     const playersResponse = await fetch(
-      "https://embeck.onrender.com/api/players",
+      "http://localhost:1010/api/admin/players",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +230,7 @@ export const fetchTeamsByTournament = async (tournamentId) => {
   try {
     // First fetch tournament details to get participating teams
     const tournamentResponse = await fetch(
-      `https://embeck.onrender.com/api/tournaments/${tournamentId}`,
+      `http://localhost:1010/api/admin/tournaments/${tournamentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -200,3 +324,4 @@ export const generateTeamStandings = (teams, matches) => {
   // Convert to array and sort by points (descending)
   return Object.values(teamStats).sort((a, b) => b.points - a.points);
 };
+

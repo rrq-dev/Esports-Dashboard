@@ -5,7 +5,7 @@ export const fetchAllUsers = async () => {
 
   try {
     const response = await fetch(
-      "https://embeck.onrender.com/api/admin/users",
+      "http://localhost:1010/api/admin/users",
       {
         headers: {
           Authorization: `Bearer ${token}`,

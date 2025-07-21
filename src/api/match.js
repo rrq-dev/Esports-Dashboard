@@ -1,57 +1,96 @@
-// Base URL for match endpoints
-const API_URL = "https://embeck.onrender.com/api";
+export const fetchAllMatches = async (tournamentId = null) => {
+  let url = "http://localhost:1010/api/admin/matches";
+  if (tournamentId) {
+    url += `?tournament_id=${tournamentId}`;
+  }
 
-/**
- * Fetch all matches
- * @returns {Promise<Array>} Array of matches
- */
-export const fetchAllMatches = async () => {
   try {
-    const response = await fetch(`${API_URL}/matches`);
+    const response = await fetch(url);
     if (!response.ok) {
-      throw new Error("Failed to fetch matches data");
+      throw new Error("Gagal memuat data pertandingan.");
     }
     const data = await response.json();
-    return data;
+    return data || [];
   } catch (error) {
-    throw new Error("Error fetching matches data: " + error.message);
+    console.error("Error fetching matches:", error);
+    throw error;
   }
 };
 
-/**
- * Fetch matches by tournament ID
- * @param {string} tournamentId - The tournament ID
- * @returns {Promise<Array>} Array of matches for the specified tournament
- */
-export const fetchMatchesByTournament = async (tournamentId) => {
+export const createMatch = async (matchData) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+    
   try {
-    const response = await fetch(
-      `${API_URL}/matches?tournament_id=${tournamentId}`
-    );
+    const response = await fetch("http://localhost:1010/api/admin/matches", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(matchData),
+    });
+
     if (!response.ok) {
-      throw new Error("Failed to fetch tournament matches");
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Gagal membuat pertandingan.");
     }
-    const data = await response.json();
-    return data;
+
+    return await response.json();
   } catch (error) {
-    throw new Error("Error fetching tournament matches: " + error.message);
+    console.error("Error creating match:", error);
+    throw error;
   }
 };
 
-/**
- * Fetch match details by ID
- * @param {string} matchId - The match ID
- * @returns {Promise<Object>} Match details
- */
 export const fetchMatchById = async (matchId) => {
+  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
   try {
-    const response = await fetch(`${API_URL}/matches/${matchId}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch match details");
-    }
-    const data = await response.json();
-    return data;
+    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error("Gagal memuat detail pertandingan.");
+    return await response.json();
   } catch (error) {
-    throw new Error("Error fetching match details: " + error.message);
+    console.error("Error fetching match by id:", error);
+    throw error;
+  }
+};
+
+export const updateMatch = async (matchId, matchData) => {
+  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
+  try {
+    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(matchData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Gagal mengupdate pertandingan.");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating match:", error);
+    throw error;
+  }
+};
+
+export const deleteMatch = async (matchId) => {
+  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
+  try {
+    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Gagal menghapus pertandingan.");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error deleting match:", error);
+    throw error;
   }
 };
