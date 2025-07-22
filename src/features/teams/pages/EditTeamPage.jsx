@@ -175,7 +175,7 @@ export function EditTeamPage() {
                             <CommandGroup>
                               {allPlayers.map((player) => (
                                 <CommandItem
-                                  value={player._id}
+                                  value={player.ml_nickname}
                                   key={player._id}
                                   onSelect={() => {
                                     form.setValue("captain_id", player._id, { shouldValidate: true });
@@ -234,7 +234,7 @@ export function EditTeamPage() {
                               {unselectedPlayers.map((player) => (
                                 <CommandItem
                                   key={player._id}
-                                  value={player._id}
+                                  value={player.ml_nickname}
                                   onSelect={() => form.setValue("members", [...selectedMembers, player._id], { shouldValidate: true })}>
                                   {player.ml_nickname}
                                 </CommandItem>

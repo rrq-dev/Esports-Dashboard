@@ -161,7 +161,7 @@ export function AddTournamentPage() {
                             <CommandEmpty>Tim tidak ditemukan.</CommandEmpty>
                             <CommandGroup>
                               {unselectedTeams.map((team) => (
-                                <CommandItem key={team._id} value={team._id} onSelect={() => form.setValue("teams_participating", [...selectedTeams, team._id])}>
+                                <CommandItem key={team._id} value={team.team_name} onSelect={() => form.setValue("teams_participating", [...selectedTeams, team._id])}>
                                   {team.team_name}
                                 </CommandItem>
                               ))}

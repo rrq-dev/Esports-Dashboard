@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { fetchTournamentById } from "@/api/tournament";
+import { fetchPublicTournamentById } from "@/api/tournament";
 import { purchaseTicket } from "@/api/user_ticket";
 import { format } from "date-fns";
 import { Calendar, Ticket } from "lucide-react";
@@ -22,7 +22,7 @@ export function PublicTournamentDetailPage() {
   useEffect(() => {
     const loadTournamentDetails = async () => {
       try {
-        const data = await fetchTournamentById(tournamentId);
+        const data = await fetchPublicTournamentById(tournamentId);
         setTournament(data);
       } catch (err) {
         toast.error("Gagal memuat detail turnamen.");

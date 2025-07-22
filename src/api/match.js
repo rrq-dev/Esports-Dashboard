@@ -1,11 +1,22 @@
 export const fetchAllMatches = async (tournamentId = null) => {
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
+  // The tournamentId parameter is kept for potential future use, but the admin endpoint currently returns all matches.
   let url = "http://localhost:1010/api/admin/matches";
   if (tournamentId) {
+    // Note: The backend admin endpoint GetAllMatches currently does not filter.
+    // This is kept for UI compatibility.
     url += `?tournament_id=${tournamentId}`;
   }
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Gagal memuat data pertandingan.");
     }
@@ -21,7 +32,7 @@ export const createMatch = async (matchData) => {
   const token = localStorage.getItem("currentUser")
     ? JSON.parse(localStorage.getItem("currentUser")).token
     : null;
-    
+
   try {
     const response = await fetch("http://localhost:1010/api/admin/matches", {
       method: "POST",
@@ -45,7 +56,10 @@ export const createMatch = async (matchData) => {
 };
 
 export const fetchMatchById = async (matchId) => {
-  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
   try {
     const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -59,7 +73,10 @@ export const fetchMatchById = async (matchId) => {
 };
 
 export const updateMatch = async (matchId, matchData) => {
-  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
   try {
     const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
       method: "PUT",
@@ -78,7 +95,10 @@ export const updateMatch = async (matchId, matchData) => {
 };
 
 export const deleteMatch = async (matchId) => {
-  const token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).token : null;
+  const token = localStorage.getItem("currentUser")
+    ? JSON.parse(localStorage.getItem("currentUser")).token
+    : null;
+
   try {
     const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
       method: "DELETE",

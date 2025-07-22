@@ -12,6 +12,22 @@ export const fetchAllTournamentsPublic = async () => {
   }
 };
 
+export const fetchPublicTournamentById = async (tournamentId) => {
+  try {
+    const response = await fetch(`http://localhost:1010/api/tournaments/${tournamentId}`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal memuat detail turnamen.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching public tournament details:", error);
+    throw error;
+  }
+};
+
 export const createTournament = async (tournamentData) => {
   const token = localStorage.getItem("currentUser")
     ? JSON.parse(localStorage.getItem("currentUser")).token
