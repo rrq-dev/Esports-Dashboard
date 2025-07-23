@@ -4,7 +4,7 @@ export const fetchAllMatches = async (tournamentId = null) => {
     : null;
 
   // The tournamentId parameter is kept for potential future use, but the admin endpoint currently returns all matches.
-  let url = "http://localhost:1010/api/admin/matches";
+  let url = "https://backend-esports.up.railway.app/api/admin/matches";
   if (tournamentId) {
     // Note: The backend admin endpoint GetAllMatches currently does not filter.
     // This is kept for UI compatibility.
@@ -34,7 +34,7 @@ export const createMatch = async (matchData) => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/admin/matches", {
+    const response = await fetch("https://backend-esports.up.railway.app/api/admin/matches", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const fetchMatchById = async (matchId) => {
     : null;
 
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/matches/${matchId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) throw new Error("Gagal memuat detail pertandingan.");
@@ -78,7 +78,7 @@ export const updateMatch = async (matchId, matchData) => {
     : null;
 
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/matches/${matchId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(matchData),
@@ -100,7 +100,7 @@ export const deleteMatch = async (matchId) => {
     : null;
 
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/matches/${matchId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/matches/${matchId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

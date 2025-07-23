@@ -5,7 +5,7 @@ export const fetchAllUsers = async () => {
 
   try {
     const response = await fetch(
-      "http://localhost:1010/api/admin/users",
+      "https://backend-esports.up.railway.app/api/admin/users",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export const fetchUserById = async (userId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/users/${userId}`,
+      `https://backend-esports.up.railway.app/api/admin/users/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ export const updateUser = async (userId, userData) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/users/${userId}`,
+      `https://backend-esports.up.railway.app/api/admin/users/${userId}`,
       {
         method: "PUT",
         headers: {
@@ -81,7 +81,7 @@ export const deleteUser = async (userId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/users/${userId}`,
+      `https://backend-esports.up.railway.app/api/admin/users/${userId}`,
       {
         method: "DELETE",
         headers: {

@@ -4,11 +4,14 @@ export const fetchAllPlayers = async () => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/admin/players", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      "https://backend-esports.up.railway.app/api/admin/players",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch players data");
     }
@@ -25,14 +28,17 @@ export const createPlayer = async (playerData) => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/admin/players", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(playerData),
-    });
+    const response = await fetch(
+      "https://backend-esports.up.railway.app/api/admin/players",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(playerData),
+      }
+    );
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || "Failed to create player");
@@ -51,7 +57,7 @@ export const fetchPlayerById = async (playerId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/players/${playerId}`,
+      `https://backend-esports.up.railway.app/api/admin/players/${playerId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,7 +81,7 @@ export const updatePlayer = async (playerId, playerData) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/players/${playerId}`,
+      `https://backend-esports.up.railway.app/api/admin/players/${playerId}`,
       {
         method: "PUT",
         headers: {
@@ -103,7 +109,7 @@ export const deletePlayer = async (playerId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/players/${playerId}`,
+      `https://backend-esports.up.railway.app/api/admin/players/${playerId}`,
       {
         method: "DELETE",
         headers: {

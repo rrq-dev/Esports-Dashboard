@@ -1,6 +1,6 @@
 export const fetchAllTournamentsPublic = async () => {
   try {
-    const response = await fetch("http://localhost:1010/api/tournaments");
+    const response = await fetch("https://backend-esports.up.railway.app/api/tournaments");
     if (!response.ok) {
       throw new Error("Gagal memuat data turnamen.");
     }
@@ -14,7 +14,7 @@ export const fetchAllTournamentsPublic = async () => {
 
 export const fetchPublicTournamentById = async (tournamentId) => {
   try {
-    const response = await fetch(`http://localhost:1010/api/tournaments/${tournamentId}`);
+    const response = await fetch(`https://backend-esports.up.railway.app/api/tournaments/${tournamentId}`);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -34,7 +34,7 @@ export const createTournament = async (tournamentData) => {
     : null;
     
   try {
-    const response = await fetch("http://localhost:1010/api/admin/tournaments", {
+    const response = await fetch("https://backend-esports.up.railway.app/api/admin/tournaments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export const fetchTournamentById = async (tournamentId) => {
     
   try {
     // Using admin endpoint to get full details including participants
-    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/tournaments/${tournamentId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -86,7 +86,7 @@ export const updateTournament = async (tournamentId, tournamentData) => {
     : null;
     
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/tournaments/${tournamentId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export const deleteTournament = async (tournamentId) => {
     : null;
     
   try {
-    const response = await fetch(`http://localhost:1010/api/admin/tournaments/${tournamentId}`, {
+    const response = await fetch(`https://backend-esports.up.railway.app/api/admin/tournaments/${tournamentId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:1010/api";
+const API_BASE_URL = "https://backend-esports.up.railway.app/api";
 
 /**
  * "Purchases" a ticket for a specific match for the logged-in user.

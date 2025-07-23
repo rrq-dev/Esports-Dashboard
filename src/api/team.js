@@ -4,7 +4,7 @@ export const fetchAllTeams = async () => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/admin/teams", {
+    const response = await fetch("https://backend-esports.up.railway.app/api/admin/teams", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,7 +30,7 @@ export const createTeam = async (teamData) => {
     : null;
 
   try {
-    const response = await fetch("http://localhost:1010/api/admin/teams", {
+    const response = await fetch("https://backend-esports.up.railway.app/api/admin/teams", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const fetchTeamById = async (teamId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/teams/${teamId}`,
+      `https://backend-esports.up.railway.app/api/admin/teams/${teamId}`,
       { 
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ export const updateTeam = async (teamId, teamData) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/teams/${teamId}`,
+      `https://backend-esports.up.railway.app/api/admin/teams/${teamId}`,
       {
         method: "PUT",
         headers: {
@@ -124,7 +124,7 @@ export const deleteTeam = async (teamId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:1010/api/admin/teams/${teamId}`,
+      `https://backend-esports.up.railway.app/api/admin/teams/${teamId}`,
       {
         method: "DELETE",
         headers: {
@@ -156,7 +156,7 @@ export const fetchTeamWithPlayers = async (teamId) => {
   try {
     // First, fetch the team details
     const teamResponse = await fetch(
-      `http://localhost:1010/api/admin/teams/${teamId}`,
+      `https://backend-esports.up.railway.app/api/admin/teams/${teamId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -181,7 +181,7 @@ export const fetchTeamWithPlayers = async (teamId) => {
 
     // Fetch all players data to avoid multiple API calls
     const playersResponse = await fetch(
-      "http://localhost:1010/api/admin/players",
+      "https://backend-esports.up.railway.app/api/admin/players",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -230,7 +230,7 @@ export const fetchTeamsByTournament = async (tournamentId) => {
   try {
     // First fetch tournament details to get participating teams
     const tournamentResponse = await fetch(
-      `http://localhost:1010/api/admin/tournaments/${tournamentId}`,
+      `https://backend-esports.up.railway.app/api/admin/tournaments/${tournamentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

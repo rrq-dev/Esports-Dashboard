@@ -1,5 +1,5 @@
 // Base URL for ticket endpoints
-const API_URL = "http://localhost:1010/api";
+const API_URL = "https://backend-esports.up.railway.app/api";
 
 /**
  * Fetch all tickets

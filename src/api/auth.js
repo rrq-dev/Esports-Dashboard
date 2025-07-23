@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:1010/api/auth";
+const API_URL = "https://backend-esports.up.railway.app/api/auth";
 
 export async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/login`, {
